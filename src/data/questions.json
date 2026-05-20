@@ -1,0 +1,124 @@
+{
+  "easy": [
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log(typeof null);",
+      "options": ["null", "object", "undefined", "string"],
+      "correctIndex": 1
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log(0 == false);",
+      "options": ["false", "error", "undefined", "true"],
+      "correctIndex": 3
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log(1 + \"2\");",
+      "options": ["3", "NaN", "12", "error"],
+      "correctIndex": 2
+    },
+    {
+      "text": "Em HTML, qual tag é usada para criar um hiperlink?",
+      "options": ["<link>", "<href>", "<url>", "<a>"],
+      "correctIndex": 3
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log(Boolean(0));",
+      "options": ["true", "0", "false", "null"],
+      "correctIndex": 2
+    },
+    {
+      "text": "Qual dessas opções NÃO é um tipo primitivo em JavaScript?",
+      "options": ["string", "number", "array", "boolean"],
+      "correctIndex": 2
+    },
+    {
+      "text": "O que significa CSS?",
+      "options": ["Creative Style Sheets", "Cascading Style Sheets", "Computer Style Syntax", "Colorful Style Sheets"],
+      "correctIndex": 1
+    },
+    {
+      "text": "Qual estrutura de dados segue o princípio FIFO?",
+      "options": ["Pilha", "Árvore", "Fila", "Grafo"],
+      "correctIndex": 2
+    }
+  ],
+  "medium": [
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log([1, 2, 3].map(x => x * 2));",
+      "options": ["[1,2,3]", "[2,4,6]", "[3,6,9]", "undefined"],
+      "correctIndex": 1
+    },
+    {
+      "text": "Qual é a complexidade de tempo de uma busca binária?",
+      "options": ["O(n)", "O(n²)", "O(log n)", "O(1)"],
+      "correctIndex": 2
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log(\"abc\".split(\"\").reverse().join(\"\"));",
+      "options": ["\"abc\"", "error", "\"cba\"", "[\"c\",\"b\",\"a\"]"],
+      "correctIndex": 2
+    },
+    {
+      "text": "Qual comando SQL retorna todas as colunas de uma tabela?",
+      "code": "SELECT ___ FROM usuarios;",
+      "options": ["ALL", "COLS", "*", "EVERY"],
+      "correctIndex": 2
+    },
+    {
+      "text": "O que o operador === verifica em JavaScript?",
+      "options": ["Apenas valor", "Apenas tipo", "Valor e tipo", "Referência de memória"],
+      "correctIndex": 2
+    },
+    {
+      "text": "Qual propriedade CSS é usada para tornar um elemento flexível?",
+      "options": ["display: block", "display: flex", "position: flex", "layout: flex"],
+      "correctIndex": 1
+    }
+  ],
+  "hard": [
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}",
+      "options": ["0 1 2", "3 3 3", "undefined", "0 0 0"],
+      "correctIndex": 1
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "console.log(0.1 + 0.2 === 0.3);",
+      "options": ["true", "undefined", "error", "false"],
+      "correctIndex": 3
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "Promise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw x })\n  .catch(x => x + 1)\n  .then(x => console.log(x));",
+      "options": ["2", "3", "error", "undefined"],
+      "correctIndex": 1
+    },
+    {
+      "text": "Em qual estrutura de dados a busca tem complexidade média O(1)?",
+      "options": ["Árvore binária", "Lista encadeada", "Hash table", "Pilha"],
+      "correctIndex": 2
+    },
+    {
+      "text": "Qual é a saída do seguinte código?",
+      "code": "function foo() {\n  return\n  { value: 42 };\n}\nconsole.log(foo());",
+      "options": ["{ value: 42 }", "42", "undefined", "error"],
+      "correctIndex": 2
+    },
+    {
+      "text": "O que é uma SQL Injection?",
+      "options": [
+        "Técnica de otimização de queries",
+        "Ataque que insere código SQL malicioso em inputs",
+        "Método de indexação de tabelas",
+        "Forma de fazer joins entre tabelas"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
