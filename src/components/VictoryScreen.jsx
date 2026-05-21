@@ -102,26 +102,27 @@ export default function VictoryScreen({ onRestart }) {
       <div style={{
         position: 'absolute', inset: 0, zIndex: 2,
         display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        gap: '1.5rem', padding: '2rem',
+        alignItems: 'center', justifyContent: 'flex-start',
+        gap: '1.5rem', padding: '2rem', paddingTop: '22vh',
       }}>
         <h1 className="victory-title" style={{
           fontFamily: "'Climate Crisis', sans-serif",
-          fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+          fontSize: 'clamp(2rem, 5.5vw, 4.5rem)',
           color: '#fff', margin: 0, lineHeight: 1.05, textAlign: 'center',
-          textShadow: '0 0 40px rgba(255,255,255,0.4), 0 4px 20px rgba(0,0,0,0.8)',
+          letterSpacing: '0.02em',
+          textShadow: '0 2px 4px #000, 0 6px 20px rgba(0,0,0,0.9), 0 12px 48px rgba(0,0,0,0.7)',
         }}>
           Parabéns!<br />Você venceu!
         </h1>
 
         <p className="victory-sub" style={{
           fontFamily: "'Montserrat', sans-serif",
-          fontSize: 'clamp(0.9rem, 2vw, 1.15rem)',
+          fontSize: 'clamp(0.75rem, 1.5vw, 0.95rem)',
           color: '#fff',
-          textAlign: 'center', maxWidth: '480px', margin: 0,
+          textAlign: 'center', maxWidth: '480px', margin: 0, marginTop: '12rem',
           background: 'rgba(0,0,0,0.55)',
-          backdropFilter: 'blur(6px)',
-          WebkitBackdropFilter: 'blur(6px)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
           borderRadius: '8px',
           padding: '0.6em 1.2em',
         }}>
