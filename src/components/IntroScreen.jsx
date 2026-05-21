@@ -3,6 +3,7 @@ import enterScene from '../assets/scenes/enter-scene.webp'
 import liprogLogo from '../assets/liprog-logo.png'
 import ufcspaAcolheLogo from '../assets/ufcspa-acolhe-logo.png'
 import Fireflies from './Fireflies.jsx'
+import { unlockAudio } from '../utils/sound.js'
 
 const styles = `
   @keyframes kb-drift {
@@ -110,6 +111,8 @@ const IntroScreen = ({ onStart }) => {
       }}>
         <button
           className="play-btn"
+          onMouseDown={unlockAudio}
+          onTouchStart={unlockAudio}
           onClick={onStart}
         >
           Clique pra começar

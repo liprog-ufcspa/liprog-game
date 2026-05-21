@@ -15,6 +15,10 @@ import { fetchQuestions }                          from './utils/fetchQuestions.
 import { initSession, INTRO, SCENE, QUESTION,
          CORRECT, WRONG_REVEAL, GAMEOVER, VICTORY } from './utils/session.js';
 import { PRELOAD_IMGS }                            from './utils/preload.js';
+import {
+  startBg, setMuted,
+  playCorrect, playWrong, playVictory, playGameover, playTimeout,
+} from './utils/sound.js';
 
 
 // ─── Componente principal ────────────────────────────────────────────────────
@@ -42,7 +46,9 @@ export default function App() {
     Promise.all(promises).then(() => setImagesReady(true));
   }, []);
 
+
   // --- Estado do jogo ---
+  const [isMuted, setIsMuted] = useState(false);
   const [gameState,       setGameState]       = useState(INTRO);
   const [sceneIndex,      setSceneIndex]      = useState(0);
   const [session,         setSession]         = useState(null);
@@ -74,9 +80,16 @@ export default function App() {
   }
 
   // --- Handlers do fluxo de jogo ---
+  function toggleMute() {
+    const next = !isMuted;
+    setIsMuted(next);
+    setMuted(next);
+  }
+
   function handleStart() {
     setWithFlash(true);
     try { document.documentElement.requestFullscreen?.(); } catch { /* fullscreen não suportado */ }
+    startBg();
     setSession(initSession(questionsData));
     setSceneIndex(0);
     goTo(() => setGameState(SCENE));
@@ -89,8 +102,9 @@ export default function App() {
   }
 
   function handleCorrect() {
+    playCorrect();
     const nextAction = sceneIndex === 2
-      ? () => setGameState(VICTORY)
+      ? () => { playVictory(); setGameState(VICTORY); }
       : () => { setSceneIndex(sceneIndex + 1); setGameState(SCENE); };
 
     setGameState(CORRECT);
@@ -98,23 +112,15 @@ export default function App() {
   }
 
   function handleWrong(chosenIndex = -1) {
+    if (chosenIndex === -1) playTimeout(); else playWrong();
     setLastResult({ question: currentPathData.question, chosenIndex, phase: sceneIndex + 1 });
     setWrongChoice(chosenIndex);
     setGameState(WRONG_REVEAL);
-    wrongRevealTimer.current = setTimeout(() => goTo(() => setGameState(GAMEOVER)), 2500);
+    wrongRevealTimer.current = setTimeout(() => goTo(() => { playGameover(); setGameState(GAMEOVER); }), 2500);
   }
 
   function restartGame() {
-    clearTimeout(correctTimer.current);
-    clearTimeout(wrongRevealTimer.current);
-    setLastResult(null);
-    setWrongChoice(null);
-    goTo(() => {
-      setSession(null);
-      setCurrentPathData(null);
-      setSceneIndex(0);
-      setGameState(INTRO);
-    });
+    window.location.reload();
   }
 
   // --- Render ---
@@ -143,6 +149,25 @@ export default function App() {
       {gameState === CORRECT  && <CorrectOverlay />}
       {gameState === GAMEOVER && <GameOverScreen onRestart={restartGame} result={lastResult} />}
       {gameState === VICTORY  && <VictoryScreen  onRestart={restartGame} />}
+
+      {gameState !== INTRO && (
+        <button
+          onClick={toggleMute}
+          aria-label={isMuted ? 'Ativar som' : 'Mutar som'}
+          style={{
+            position: 'fixed', bottom: '1.25rem', left: '1.25rem', zIndex: 100,
+            background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.2)',
+            borderRadius: '50%', width: '40px', height: '40px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', fontSize: '1.1rem',
+            backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
+            transition: 'opacity 0.2s',
+            opacity: isMuted ? 0.5 : 1,
+          }}
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
+      )}
 
       <TransitionOverlay
         isActive={transitioning}

@@ -23,7 +23,7 @@ const css = `
     inset: 0;
     background: #fff;
     z-index: 9999;
-    animation: pkm-flash 1.0s steps(1, end) forwards;
+    animation: pkm-flash 1.4s steps(1, end) forwards;
     pointer-events: none;
   }
 
@@ -33,7 +33,7 @@ const css = `
     background: #000;
     z-index: 9999;
     clip-path: circle(0% at 50% 50%);
-    animation: pkm-circle 0.85s cubic-bezier(0, 0, 0.15, 1) forwards;
+    animation: pkm-circle 1.45s cubic-bezier(0, 0, 0.15, 1) forwards;
     pointer-events: none;
   }
 `

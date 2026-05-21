@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import questionScene from '../assets/scenes/question-scene.webp'
 
-const TIMERS = { easy: 60, medium: 90, hard: 120 }
+const TIMERS = { easy: 30, medium: 45, hard: 60 }
 
 function shuffleArray(arr) {
   const result = [...arr]
@@ -150,7 +150,7 @@ export default function QuestionScreen({
 
   useEffect(() => {
     if (answered) return
-    if (timeLeft === 0) { onWrong(-1); return }
+    if (timeLeft === 0) { setAnswered(true); onWrong(-1); return }
 
     const id = setTimeout(() => setTimeLeft(t => t - 1), 1000)
     return () => clearTimeout(id)
