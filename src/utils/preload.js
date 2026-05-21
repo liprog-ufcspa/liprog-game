@@ -1,5 +1,6 @@
 import enterSceneImg  from '../assets/scenes/enter-scene.webp';
 import threePathImg   from '../assets/scenes/three-path-scene.webp';
+import threePath2Img  from '../assets/scenes/three-path-scene-2.webp';
 import twoPathImg     from '../assets/scenes/two-path-scene.webp';
 import winSceneImg    from '../assets/scenes/win-scene.webp';
 import loseSceneImg   from '../assets/scenes/lose-scene.webp';
@@ -7,6 +8,7 @@ import loseSceneImg   from '../assets/scenes/lose-scene.webp';
 export const PRELOAD_IMGS = [
   enterSceneImg,
   threePathImg,
+  threePath2Img,
   twoPathImg,
   winSceneImg,
   loseSceneImg,

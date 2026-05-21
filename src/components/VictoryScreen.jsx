@@ -117,9 +117,13 @@ export default function VictoryScreen({ onRestart }) {
         <p className="victory-sub" style={{
           fontFamily: "'Montserrat', sans-serif",
           fontSize: 'clamp(0.9rem, 2vw, 1.15rem)',
-          color: 'rgba(255,255,255,0.9)',
+          color: '#fff',
           textAlign: 'center', maxWidth: '480px', margin: 0,
-          textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+          background: 'rgba(0,0,0,0.55)',
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
+          borderRadius: '8px',
+          padding: '0.6em 1.2em',
         }}>
           Agora jogue os dardos para ganhar seu prêmio!
         </p>

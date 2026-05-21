@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import TwoPathScene from '../assets/scenes/two-path-scene.webp'
 import ThreePathScene from '../assets/scenes/three-path-scene.webp'
+import ThreePathScene2 from '../assets/scenes/three-path-scene-2.webp'
 import scenes from '../data/scenes.json'
 import Fireflies from './Fireflies.jsx'
 
@@ -59,6 +60,7 @@ const css = `
 
 const images = {
   'three-path': ThreePathScene,
+  'three-path-2': ThreePathScene2,
   'two-path': TwoPathScene,
 }
 

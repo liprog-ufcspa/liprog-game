@@ -10,7 +10,7 @@
   },
   {
     "id": 1,
-    "image": "three-path",
+    "image": "three-path-2",
     "paths": [
       { "cx": 470,  "cy": 540, "r": 120 },
       { "cx": 1010,  "cy": 510, "r": 200 },
