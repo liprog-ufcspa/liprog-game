@@ -56,7 +56,7 @@ function rowsToQuestions(rows) {
       options:      [opt1, opt2, opt3, opt4].map(o => o?.trim() ?? ''),
       correctIndex: parseInt(correctIndex?.trim(), 10),
     }
-    if (code?.trim()) question.code = code.trim()
+    if (code?.trim()) question.code = code.trim().replace(/\\n/g, '\n')
 
     result[key].push(question)
   }

@@ -86,6 +86,19 @@ export default function GameOverScreen({ onRestart, result }) {
               {result.question.text}
             </p>
 
+            {result.question.code && (
+              <pre style={{
+                margin: 0, background: '#0d0804',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: '#c8a060', padding: '0.9rem 1.2rem',
+                borderRadius: '6px',
+                fontSize: 'clamp(0.75rem, 1.4vw, 0.88rem)',
+                overflowX: 'auto',
+              }}>
+                {result.question.code}
+              </pre>
+            )}
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {result.question.options.map((opt, i) => {
                 const isCorrect = Number(i) === Number(result.question.correctIndex)
