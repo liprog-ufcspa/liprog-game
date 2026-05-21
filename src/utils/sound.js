@@ -15,9 +15,10 @@ const DUCK_OUT = 400   // ms para restaurar volume após ducking
 // para garantir play sem latência perceptível no click.
 
 const bg = new Howl({
-  src: [`${BASE}audio/bg-music.mp3`],
-  loop:   true,
+  src:   [`${BASE}audio/bg-music.mp3`],
+  loop:  true,
   volume: BG_VOL,
+  html5: true, // streaming — toca imediatamente sem esperar decode completo do MP3
   onloaderror: () => console.warn('[sound] bg-music.mp3 não encontrado em public/audio/'),
 })
 
