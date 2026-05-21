@@ -53,7 +53,7 @@ const css = `
   }
 
   @media (max-width: 600px) {
-    .scene-label { font-size: 0.65rem; letter-spacing: 0.08em; }
+    .scene-label { font-size: 0.65rem; letter-spacing: 0.05em; padding-bottom: 6px; }
   }
 
 `
@@ -70,7 +70,7 @@ export default function SceneScreen({ sceneIndex, onChoosePath }) {
   const background = images[scene.image]
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '100%', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       <style>{css}</style>
 
       {/* Imagem e SVG no mesmo wrapper para o ken-burns mover os dois juntos */}
@@ -139,23 +139,23 @@ export default function SceneScreen({ sceneIndex, onChoosePath }) {
 
       {/* Indicador de fase */}
       <div style={{
-        position: 'absolute', top: '1.25rem', left: '50%',
+        position: 'absolute', top: 'clamp(0.6rem, 2vh, 1.25rem)', left: '50%',
         transform: 'translateX(-50%)', zIndex: 4,
-        display: 'flex', gap: '8px', alignItems: 'center',
+        display: 'flex', gap: 'clamp(5px, 1.5vw, 8px)', alignItems: 'center',
       }}>
         {[0, 1, 2].map(i => (
           <div key={i} style={{
-            width: '10px', height: '10px', borderRadius: '50%',
+            width: 'clamp(7px, 2vw, 10px)', height: 'clamp(7px, 2vw, 10px)', borderRadius: '50%',
             background: i <= sceneIndex ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.2)',
             boxShadow: i <= sceneIndex ? '0 0 8px rgba(255,255,255,0.6)' : 'none',
           }} />
         ))}
       </div>
       <div style={{
-        position: 'absolute', top: '1rem', right: '1.5rem', zIndex: 4,
+        position: 'absolute', top: 'clamp(0.5rem, 2vh, 1rem)', right: 'clamp(0.75rem, 2vw, 1.5rem)', zIndex: 4,
         fontFamily: "'Press Start 2P', cursive",
-        fontSize: '0.6rem', color: 'rgba(255,255,255,0.55)',
-        letterSpacing: '0.1em', textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+        fontSize: 'clamp(0.6rem, 1.5vw, 0.7rem)', color: 'rgba(255,255,255,0.55)',
+        letterSpacing: '0.08em', textShadow: '0 2px 8px rgba(0,0,0,0.8)',
       }}>
         Fase {sceneIndex + 1}/3
       </div>

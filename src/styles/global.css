@@ -6,11 +6,18 @@
 
 html,
 body {
-  width: 100vw;
+  width: 100%;
+  /* dvh suporta barra do browser mobile; vh como fallback */
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   font-size: 16px;
   font-family: 'Montserrat', sans-serif;
+  touch-action: manipulation; /* evita double-tap zoom em mobile */
+}
+
+@media (max-width: 390px) {
+  html { font-size: 15px; }
 }
 
 @keyframes screen-fadein {

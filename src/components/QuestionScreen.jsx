@@ -122,12 +122,16 @@ const css = `
   }
 
   @media (max-width: 600px) {
-    .q-layout { padding: 0.75rem; gap: 0.75rem; }
-    .answers-grid { grid-template-columns: 1fr; }
-    .dungeon-btn { height: auto; min-height: 60px; padding: 12px 14px; font-size: 0.9rem; }
-    .dungeon-shape { width: 30px; height: 30px; font-size: 0.85rem; }
+    .q-layout { padding: 0.5rem; gap: 0.5rem; }
+    .answers-grid { grid-template-columns: 1fr; gap: 6px; }
+    .dungeon-btn { height: auto; min-height: 48px; padding: 10px 12px; font-size: 0.82rem; }
+    .dungeon-shape { width: 28px; height: 28px; font-size: 0.8rem; }
     .key-hint { display: none; }
-    .q-timer { top: -14px; right: 6px; width: 46px; height: 46px; font-size: 0.9rem; }
+    .q-timer { top: -12px; right: 4px; width: 42px; height: 42px; font-size: 0.85rem; }
+  }
+
+  @media (max-width: 360px) {
+    .dungeon-btn { font-size: 0.75rem; min-height: 44px; padding: 8px 10px; }
   }
 `
 
@@ -213,7 +217,7 @@ export default function QuestionScreen({
   return (
     <div className={shaking ? 'shake' : ''} style={{ position: 'fixed', inset: 0 }}>
     <div className="fade-in" role="main" aria-label="Tela de pergunta" style={{
-      width: '100vw', height: '100vh',
+      width: '100%', height: '100dvh',
       position: 'relative',
       fontFamily: "'Montserrat', sans-serif",
       display: 'flex', flexDirection: 'column',
@@ -247,9 +251,9 @@ export default function QuestionScreen({
             background: '#1e1008',
             border: '1px solid rgba(255,255,255,0.12)',
             borderTop: '1px solid rgba(255,255,255,0.22)',
-            borderRadius: '8px', padding: '1.5rem 2rem',
+            borderRadius: '8px', padding: 'clamp(0.75rem, 3vw, 1.5rem) clamp(0.875rem, 4vw, 2rem)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)',
           }}>
             <h2 style={{
               margin: 0, fontSize: 'clamp(1.05rem, 2.4vw, 1.4rem)',
@@ -266,8 +270,9 @@ export default function QuestionScreen({
                 border: '1px solid rgba(255,255,255,0.1)',
                 color: '#c8a060', padding: '0.9rem 1.2rem',
                 borderRadius: '6px',
-                fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)',
+                fontSize: 'clamp(0.75rem, 1.6vw, 0.95rem)',
                 width: '100%', overflowX: 'auto',
+                whiteSpace: 'pre-wrap', wordBreak: 'break-word',
               }}>
                 {question.code}
               </pre>

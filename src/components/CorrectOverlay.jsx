@@ -68,7 +68,7 @@ export default function CorrectOverlay() {
       {/* Label */}
       <div className="correct-label" style={{
         fontFamily: "'Climate Crisis', sans-serif",
-        fontSize: 'clamp(3rem, 10vw, 6rem)',
+        fontSize: 'clamp(2rem, 8vw, 5rem)',
         color: '#4ade80',
         textShadow: '0 0 40px rgba(74,222,128,0.6), 0 4px 16px rgba(0,0,0,0.9)',
         letterSpacing: '0.04em',

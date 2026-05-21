@@ -1,7 +1,7 @@
 import React from 'react'
 import enterScene from '../assets/scenes/enter-scene.webp'
-import liprogLogo from '../assets/liprog-logo.png'
-import ufcspaAcolheLogo from '../assets/ufcspa-acolhe-logo.png'
+import liprogLogo from '../assets/liprog-logo.webp'
+import ufcspaAcolheLogo from '../assets/ufcspa-acolhe-logo.webp'
 import Fireflies from './Fireflies.jsx'
 import { unlockAudio } from '../utils/sound.js'
 
@@ -69,16 +69,23 @@ const styles = `
   .logo-ufcspa { height: 120px; }
   .logo-liprog  { height: 200px; }
 
+  .play-btn { min-height: 48px; }
+
   @media (max-width: 600px) {
-    .logo-ufcspa { height: 64px; }
-    .logo-liprog  { height: 100px; }
-    .play-btn { font-size: 0.7rem; padding: 14px 24px; }
+    .logo-ufcspa { height: 48px; }
+    .logo-liprog  { height: 80px; }
+    .play-btn { font-size: 0.65rem; padding: 14px 20px; min-height: 48px; }
+  }
+
+  @media (max-width: 360px) {
+    .logo-ufcspa { height: 36px; }
+    .logo-liprog  { height: 60px; }
   }
 `
 
 const IntroScreen = ({ onStart }) => {
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '100%', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       <style>{styles}</style>
       <img src={enterScene} alt="Intro" className="kb-img" />
       <div className="vignette" />
@@ -87,7 +94,7 @@ const IntroScreen = ({ onStart }) => {
 
       {/* Title — top */}
       <div style={{
-        position: 'absolute', top: '8%', left: 0, right: 0,
+        position: 'absolute', top: 'clamp(1.5rem, 8%, 4rem)', left: 0, right: 0,
         display: 'flex', justifyContent: 'center'
       }}>
         <h1 style={{
@@ -123,14 +130,14 @@ const IntroScreen = ({ onStart }) => {
         src={ufcspaAcolheLogo}
         alt="UFCSPA Acolhe"
         className="logo-ufcspa"
-        style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', objectFit: 'contain' }}
+        style={{ position: 'absolute', bottom: 'clamp(0.5rem, 2vh, 1.5rem)', left: 'clamp(0.5rem, 2vw, 1.5rem)', objectFit: 'contain' }}
       />
 
       <img
         src={liprogLogo}
         alt="LiProg"
         className="logo-liprog"
-        style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', objectFit: 'contain' }}
+        style={{ position: 'absolute', bottom: 'clamp(0.5rem, 2vh, 1.5rem)', right: 'clamp(0.5rem, 2vw, 1.5rem)', objectFit: 'contain' }}
       />
     </div>
   )

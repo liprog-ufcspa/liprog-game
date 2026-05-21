@@ -36,14 +36,19 @@ const css = `
   }
 
   @media (max-width: 600px) {
-    .gameover-card { padding: 1rem; max-width: 100%; }
-    .gameover-btn { font-size: 0.6rem; padding: 12px 24px; }
+    .gameover-card { padding: 0.875rem; max-width: 100%; }
+    .gameover-btn { font-size: 0.6rem; padding: 12px 20px; min-height: 48px; }
+  }
+
+  @media (max-width: 360px) {
+    .gameover-card { padding: 0.75rem; }
+    .gameover-btn { font-size: 0.55rem; }
   }
 `
 
 export default function GameOverScreen({ onRestart, result }) {
   return (
-    <div className="fade-in" style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+    <div className="fade-in" style={{ width: '100%', height: '100dvh', position: 'relative' }}>
       <style>{css}</style>
 
       <img src={loseScene} alt="Game Over"
@@ -58,11 +63,12 @@ export default function GameOverScreen({ onRestart, result }) {
         position: 'absolute', inset: 0,
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        gap: '1.75rem', padding: '2rem',
+        gap: 'clamp(1rem, 3vh, 1.75rem)', padding: 'clamp(1rem, 3vw, 2rem)',
+        overflowY: 'auto',
       }}>
         <h1 style={{
           fontFamily: "'Climate Crisis', sans-serif",
-          fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+          fontSize: 'clamp(2rem, 7vw, 5rem)',
           color: '#8b1a1a', margin: 0, lineHeight: 1,
           textShadow: '0 0 40px rgba(180,20,20,0.5), 0 4px 16px rgba(0,0,0,0.9)',
         }}>
@@ -90,9 +96,10 @@ export default function GameOverScreen({ onRestart, result }) {
               <pre style={{
                 margin: 0, background: '#0d0804',
                 border: '1px solid rgba(255,255,255,0.1)',
-                color: '#c8a060', padding: '0.9rem 1.2rem',
+                color: '#c8a060', padding: '0.75rem 1rem',
                 borderRadius: '6px',
-                fontSize: 'clamp(0.75rem, 1.4vw, 0.88rem)',
+                fontSize: 'clamp(0.7rem, 1.4vw, 0.88rem)',
+                whiteSpace: 'pre-wrap', wordBreak: 'break-word',
                 overflowX: 'auto',
               }}>
                 {result.question.code}

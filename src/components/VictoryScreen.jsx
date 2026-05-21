@@ -45,6 +45,7 @@ const css = `
     border: none;
     border-bottom: 2px solid rgba(255,255,255,0.3);
     padding: 14px 32px;
+    min-height: 48px;
     cursor: pointer;
     outline: 1px solid rgba(255,255,255,0.25);
     outline-offset: -4px;
@@ -54,6 +55,10 @@ const css = `
 
   .victory-btn:hover  { filter: brightness(1.3); }
   .victory-btn:active { transform: translateY(3px); }
+
+  @media (max-width: 600px) {
+    .victory-btn { font-size: 0.6rem; padding: 12px 20px; }
+  }
 `
 
 function rand(a, b) { return a + Math.random() * (b - a) }
@@ -76,7 +81,7 @@ const PARTICLES = Array.from({ length: COUNT }, () => {
 export default function VictoryScreen({ onRestart }) {
 
   return (
-    <div className="fade-in" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <div className="fade-in" style={{ width: '100%', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       <style>{css}</style>
 
       <img src={winScene} alt="Victory"
@@ -103,7 +108,8 @@ export default function VictoryScreen({ onRestart }) {
         position: 'absolute', inset: 0, zIndex: 2,
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'flex-start',
-        gap: '1.5rem', padding: '2rem', paddingTop: '22vh',
+        gap: 'clamp(0.75rem, 2vh, 1.5rem)', padding: 'clamp(1rem, 3vw, 2rem)',
+        paddingTop: 'clamp(3rem, 15vh, 22vh)',
       }}>
         <h1 className="victory-title" style={{
           fontFamily: "'Climate Crisis', sans-serif",
@@ -119,7 +125,7 @@ export default function VictoryScreen({ onRestart }) {
           fontFamily: "'Montserrat', sans-serif",
           fontSize: 'clamp(0.75rem, 1.5vw, 0.95rem)',
           color: '#fff',
-          textAlign: 'center', maxWidth: '480px', margin: 0, marginTop: '12rem',
+          textAlign: 'center', maxWidth: 'clamp(240px, 90vw, 480px)', margin: 0, marginTop: 'clamp(1.5rem, 6vh, 12rem)',
           background: 'rgba(0,0,0,0.55)',
           backdropFilter: 'blur(14px)',
           WebkitBackdropFilter: 'blur(14px)',
