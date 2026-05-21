@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import winScene from '../assets/scenes/win-scene.png'
+import React from 'react'
+import winScene from '../assets/scenes/win-scene.webp'
 
 const COLORS = ['#f97316', '#a855f7', '#22d3ee', '#facc15', '#4ade80', '#f472b6', '#60a5fa', '#fb923c']
 const COUNT = 120
@@ -60,21 +60,20 @@ function rand(a, b) { return a + Math.random() * (b - a) }
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-export default function VictoryScreen({ onRestart, history = [] }) {
-  const particles = useMemo(() =>
-    Array.from({ length: COUNT }, () => {
-      const duration = rand(2.5, 5)
-      return {
-        left:         rand(0, 100),
-        color:        COLORS[Math.floor(Math.random() * COLORS.length)],
-        width:        rand(6, 14),
-        height:       rand(8, 20),
-        duration,
-        delay:        -rand(0, duration), // negativo = já em progresso ao montar
-        borderRadius: Math.random() > 0.4 ? '2px' : '50%',
-      }
-    })
-  , [])
+const PARTICLES = Array.from({ length: COUNT }, () => {
+  const duration = rand(2.5, 5)
+  return {
+    left:         rand(0, 100),
+    color:        COLORS[Math.floor(Math.random() * COLORS.length)],
+    width:        rand(6, 14),
+    height:       rand(8, 20),
+    duration,
+    delay:        -rand(0, duration), // negativo = já em progresso ao montar
+    borderRadius: Math.random() > 0.4 ? '2px' : '50%',
+  }
+})
+
+export default function VictoryScreen({ onRestart }) {
 
   return (
     <div className="fade-in" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
@@ -89,7 +88,7 @@ export default function VictoryScreen({ onRestart, history = [] }) {
       }} />
 
       {/* Confetti — delay negativo garante chuva imediata e contínua */}
-      {!reducedMotion && particles.map((p, i) => (
+      {!reducedMotion && PARTICLES.map((p, i) => (
         <div key={i} style={{
           position: 'absolute', top: 0,
           left: `${p.left}%`,

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 
 // Técnica do GeeksforGeeks: 3 animações com durações diferentes por vagalume
 // criam trajetórias orgânicas únicas sem keyframes por partícula
@@ -42,20 +42,21 @@ function rand(a, b) { return a + Math.random() * (b - a) }
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// Gerado uma vez no módulo — count máximo usado é 14
+const ALL_FLIES = Array.from({ length: 16 }, (_, i) => ({
+  id: i,
+  xDur:      rand(90, 150),
+  yDur:      rand(18, 35),
+  glowDur:   rand(4,  8),
+  xDelay:   -rand(0,  150),
+  yDelay:   -rand(0,  35),
+  glowDelay:-rand(0,  8),
+}))
+
 export default function Fireflies({ count = 16, zIndex = 2 }) {
   if (reducedMotion) return null
 
-  const flies = useMemo(() =>
-    Array.from({ length: count }, (_, i) => ({
-      id: i,
-      xDur:      rand(90, 150),
-      yDur:      rand(18, 35),
-      glowDur:   rand(4,  8),
-      xDelay:   -rand(0,  150),
-      yDelay:   -rand(0,  35),
-      glowDelay:-rand(0,  8),
-    }))
-  , [count])
+  const flies = ALL_FLIES.slice(0, count)
 
   return (
     <div style={{

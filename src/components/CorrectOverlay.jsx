@@ -1,7 +1,22 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 
 const COLORS = ['#f97316', '#a855f7', '#22d3ee', '#facc15', '#4ade80', '#f472b6', '#60a5fa']
 const COUNT = 70
+
+function randomBetween(a, b) {
+  return a + Math.random() * (b - a)
+}
+
+const PARTICLES = Array.from({ length: COUNT }, (_, i) => ({
+  id: i,
+  left: randomBetween(0, 100),
+  color: COLORS[Math.floor(Math.random() * COLORS.length)],
+  width: randomBetween(6, 13),
+  height: randomBetween(8, 18),
+  duration: randomBetween(0.9, 1.8),
+  delay: randomBetween(0, 0.4),
+  borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+}))
 
 const css = `
   @keyframes shoot-up {
@@ -22,24 +37,7 @@ const css = `
   }
 `
 
-function randomBetween(a, b) {
-  return a + Math.random() * (b - a)
-}
-
 export default function CorrectOverlay() {
-
-  const particles = useMemo(() =>
-    Array.from({ length: COUNT }, (_, i) => ({
-      id: i,
-      left: randomBetween(0, 100),
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      width: randomBetween(6, 13),
-      height: randomBetween(8, 18),
-      duration: randomBetween(0.9, 1.8),
-      delay: randomBetween(0, 0.4),
-      borderRadius: Math.random() > 0.5 ? '50%' : '2px',
-    }))
-  , [])
 
   return (
     <div style={{
@@ -51,7 +49,7 @@ export default function CorrectOverlay() {
       <style>{css}</style>
 
       {/* Confetti particles */}
-      {particles.map(p => (
+      {PARTICLES.map(p => (
         <div
           key={p.id}
           style={{

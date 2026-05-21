@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import TwoPathScene from '../assets/scenes/two-path-scene.png'
-import ThreePathScene from '../assets/scenes/three-path-scene.png'
+import TwoPathScene from '../assets/scenes/two-path-scene.webp'
+import ThreePathScene from '../assets/scenes/three-path-scene.webp'
 import scenes from '../data/scenes.json'
 import Fireflies from './Fireflies.jsx'
 
@@ -51,6 +51,10 @@ const css = `
     gap: 0.75rem;
   }
 
+  @media (max-width: 600px) {
+    .scene-label { font-size: 0.65rem; letter-spacing: 0.08em; }
+  }
+
 `
 
 const images = {
@@ -67,7 +71,7 @@ export default function SceneScreen({ sceneIndex, onChoosePath }) {
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <style>{css}</style>
 
-      {/* Wrapper animado — imagem + SVG se movem juntos */}
+      {/* Imagem e SVG no mesmo wrapper para o ken-burns mover os dois juntos */}
       <div className="scene-kb-wrap">
         <img src={background} alt="Scene" className="scene-kb-img" />
         <svg
@@ -127,11 +131,11 @@ export default function SceneScreen({ sceneIndex, onChoosePath }) {
       </svg>
       </div>
 
-      {/* Vinheta e vagalumes ficam fixos na tela */}
+      {/* Vinheta e vagalumes fora do wrapper para não sofrerem o ken-burns */}
       <div className="scene-vignette" />
       <Fireflies count={14} zIndex={3} />
 
-      {/* Fase indicator */}
+      {/* Indicador de fase */}
       <div style={{
         position: 'absolute', top: '1.25rem', left: '50%',
         transform: 'translateX(-50%)', zIndex: 4,

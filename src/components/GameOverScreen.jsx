@@ -1,5 +1,5 @@
 import React from 'react'
-import loseScene from '../assets/scenes/lose-scene.png'
+import loseScene from '../assets/scenes/lose-scene.webp'
 
 const css = `
   .gameover-btn {
@@ -22,6 +22,23 @@ const css = `
     box-shadow: 0 5px 0 rgba(0,0,0,0.8), 0 0 18px rgba(200,134,10,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
   }
   .gameover-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,0.8); }
+
+  .gameover-card {
+    background: rgba(10,5,2,0.88);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 600px) {
+    .gameover-card { padding: 1rem; max-width: 100%; }
+    .gameover-btn { font-size: 0.6rem; padding: 12px 24px; }
+  }
 `
 
 export default function GameOverScreen({ onRestart, result }) {
@@ -53,13 +70,7 @@ export default function GameOverScreen({ onRestart, result }) {
         </h1>
 
         {result && (
-          <div style={{
-            background: 'rgba(10,5,2,0.88)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '8px', padding: '1.25rem 1.5rem',
-            width: '100%', maxWidth: '560px',
-            display: 'flex', flexDirection: 'column', gap: '0.75rem',
-          }}>
+          <div className="gameover-card">
             <p style={{
               fontFamily: "'Press Start 2P', cursive",
               fontSize: '0.55rem', color: 'rgba(255,255,255,0.4)',

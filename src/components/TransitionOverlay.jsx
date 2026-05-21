@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 
 const css = `
   @keyframes pkm-flash {
@@ -39,19 +39,9 @@ const css = `
 `
 
 export default function TransitionOverlay({ isActive, withFlash, onDone }) {
-  const [phase, setPhase] = useState(null)
-  const withFlashRef = useRef(withFlash)
+  const [circleOnly, setCircleOnly] = useState(false)
 
-  // keep ref current so the effect always reads the latest value
-  withFlashRef.current = withFlash
-
-  useEffect(() => {
-    if (isActive) {
-      setPhase(withFlashRef.current ? 'flash' : 'circle')
-    } else {
-      setPhase(null)
-    }
-  }, [isActive])
+  const phase = !isActive ? null : (withFlash && !circleOnly) ? 'flash' : 'circle'
 
   if (phase === null) return null
 
@@ -62,7 +52,7 @@ export default function TransitionOverlay({ isActive, withFlash, onDone }) {
       {phase === 'flash' && (
         <div
           className="pkm-flash-layer"
-          onAnimationEnd={() => setPhase('circle')}
+          onAnimationEnd={() => setCircleOnly(true)}
         />
       )}
 

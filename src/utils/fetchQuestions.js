@@ -1,12 +1,10 @@
 import localQuestions from '../data/questions.json'
 
-// Cole aqui a URL da sua planilha publicada como CSV:
-// Planilha > Arquivo > Compartilhar > Publicar na Web > CSV > Copiar link
-// Formato esperado das colunas (linha 1 = cabeçalho, ignorado):
-// difficulty | text | code | option1 | option2 | option3 | option4 | correctIndex
 const SHEETS_URL = import.meta.env.VITE_SHEETS_URL ?? ''
 
-// Parser CSV que lida com campos entre aspas e quebras de linha dentro deles
+
+// ─── Parser CSV ──────────────────────────────────────────────────────────────
+// Lida com campos entre aspas e quebras de linha dentro deles (RFC 4180)
 function parseCSV(raw) {
   const rows = []
   let row = []
@@ -14,11 +12,11 @@ function parseCSV(raw) {
   let inQuotes = false
 
   for (let i = 0; i < raw.length; i++) {
-    const ch = raw[i]
+    const ch   = raw[i]
     const next = raw[i + 1]
 
     if (inQuotes) {
-      if (ch === '"' && next === '"') { field += '"'; i++ }
+      if (ch === '"' && next === '"') { field += '"'; i++ } // aspas escapadas
       else if (ch === '"')             inQuotes = false
       else                             field += ch
     } else {
@@ -39,8 +37,13 @@ function parseCSV(raw) {
   return rows
 }
 
-function sheetsToQuestions(rows) {
-  const [, ...data] = rows // descarta cabeçalho
+
+// ─── Transformação ───────────────────────────────────────────────────────────
+// Converte as linhas do CSV no formato { easy, medium, hard }
+// Linha 1 é o cabeçalho e é descartada
+// Colunas esperadas: difficulty | text | code | option1-4 | correctIndex
+function rowsToQuestions(rows) {
+  const [, ...data] = rows
   const result = { easy: [], medium: [], hard: [] }
 
   for (const row of data) {
@@ -49,8 +52,8 @@ function sheetsToQuestions(rows) {
     if (!key || !result[key] || !text?.trim()) continue
 
     const question = {
-      text: text.trim(),
-      options: [opt1, opt2, opt3, opt4].map(o => o?.trim() ?? ''),
+      text:         text.trim(),
+      options:      [opt1, opt2, opt3, opt4].map(o => o?.trim() ?? ''),
       correctIndex: parseInt(correctIndex?.trim(), 10),
     }
     if (code?.trim()) question.code = code.trim()
@@ -61,29 +64,24 @@ function sheetsToQuestions(rows) {
   return result
 }
 
-function isValid(q) {
-  return ['easy', 'medium', 'hard'].every(d => q[d]?.length > 0)
+function hasAllDifficulties(questions) {
+  return ['easy', 'medium', 'hard'].every(d => questions[d]?.length > 0)
 }
 
+
+// ─── Fetch principal ─────────────────────────────────────────────────────────
+// Tenta buscar do Google Sheets; em caso de falha usa o JSON local
 export async function fetchQuestions() {
   if (SHEETS_URL) {
     try {
       const res = await fetch(SHEETS_URL, { signal: AbortSignal.timeout(6000) })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      if (!res.ok) throw new Error()
 
-      const text = await res.text()
-      const rows = parseCSV(text)
-      const questions = sheetsToQuestions(rows)
+      const questions = rowsToQuestions(parseCSV(await res.text()))
+      if (!hasAllDifficulties(questions)) throw new Error()
 
-      if (!isValid(questions)) throw new Error('Planilha sem dados suficientes')
-
-      console.info('[questions] Carregado do Google Sheets ✓')
       return questions
-    } catch (err) {
-      console.warn('[questions] Sheets falhou, usando fallback local:', err.message)
-    }
-  } else {
-    console.info('[questions] VITE_SHEETS_URL não configurado, usando fallback local')
+    } catch { /* usa fallback local */ }
   }
 
   return localQuestions

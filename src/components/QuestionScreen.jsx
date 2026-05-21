@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
-import questionScene from '../assets/scenes/question-scene.png'
+import questionScene from '../assets/scenes/question-scene.webp'
 
 const TIMERS = { easy: 60, medium: 90, hard: 120 }
 
-// Fisher-Yates shuffle
 function shuffleArray(arr) {
   const result = [...arr]
   for (let i = result.length - 1; i > 0; i--) {
@@ -22,21 +21,6 @@ const ANSWERS = [
 
 const KEY_MAP = { '1': 0, '2': 1, '3': 2, '4': 3 }
 
-function playBeep(freq, duration = 0.12) {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)()
-    const osc = ctx.createOscillator()
-    const gain = ctx.createGain()
-    osc.connect(gain)
-    gain.connect(ctx.destination)
-    osc.type = 'sine'
-    osc.frequency.value = freq
-    gain.gain.setValueAtTime(0.12, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration)
-    osc.start()
-    osc.stop(ctx.currentTime + duration)
-  } catch (_) {}
-}
 
 const css = `
   .dungeon-btn {
@@ -94,6 +78,57 @@ const css = `
     color: rgba(255,255,255,0.25);
     font-family: 'Press Start 2P', cursive;
   }
+
+  /* Layout geral da tela de pergunta */
+  .q-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    gap: 1.25rem;
+  }
+
+  /* Card da pergunta */
+  .q-card-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+  }
+
+  /* Timer circular sobreposto ao card */
+  .q-timer {
+    position: absolute;
+    top: -22px;
+    right: -22px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+
+  /* Grid 2x2 das alternativas */
+  .answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 960px;
+  }
+
+  @media (max-width: 600px) {
+    .q-layout { padding: 0.75rem; gap: 0.75rem; }
+    .answers-grid { grid-template-columns: 1fr; }
+    .dungeon-btn { height: auto; min-height: 60px; padding: 12px 14px; font-size: 0.9rem; }
+    .dungeon-shape { width: 30px; height: 30px; font-size: 0.85rem; }
+    .key-hint { display: none; }
+    .q-timer { top: -14px; right: 6px; width: 46px; height: 46px; font-size: 0.9rem; }
+  }
 `
 
 export default function QuestionScreen({
@@ -107,24 +142,15 @@ export default function QuestionScreen({
   const shakeTimer = useRef(null)
 
   // Embaralha a ordem das opções para cada nova pergunta
-  const shuffledIndices = useMemo(() => {
-    return shuffleArray([0, 1, 2, 3])
-  }, [question])
+  const shuffledIndices = useMemo(() => shuffleArray([0, 1, 2, 3]), [])
 
   useEffect(() => {
-    setTimeLeft(timerStart)
-    setAnswered(false)
-    setShaking(false)
     return () => clearTimeout(shakeTimer.current)
-  }, [question, timerStart])
+  }, [])
 
-  // Timer + áudio countdown
   useEffect(() => {
     if (answered) return
     if (timeLeft === 0) { onWrong(-1); return }
-
-    if (timeLeft <= 5)  playBeep(880)
-    else if (timeLeft === 10) playBeep(440)
 
     const id = setTimeout(() => setTimeLeft(t => t - 1), 1000)
     return () => clearTimeout(id)
@@ -213,15 +239,10 @@ export default function QuestionScreen({
         }} />
       </div>
 
-      <div style={{
-        position: 'relative', zIndex: 1,
-        flex: 1, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: '1.5rem 2rem', gap: '1.25rem',
-      }}>
+      <div className="q-layout" style={{ position: 'relative', zIndex: 1 }}>
 
-        {/* Question card */}
-        <div style={{ position: 'relative', width: '100%', maxWidth: '960px' }}>
+        {/* Card da pergunta */}
+        <div className="q-card-wrap">
           <div style={{
             background: '#1e1008',
             border: '1px solid rgba(255,255,255,0.12)',
@@ -253,15 +274,12 @@ export default function QuestionScreen({
             )}
           </div>
 
-          {/* Timer circle */}
-          <div style={{
-            position: 'absolute', top: '-22px', right: '-22px',
-            width: '58px', height: '58px', borderRadius: '50%',
+          {/* Timer circular — posição ajustada via .q-timer no CSS */}
+          <div className="q-timer" style={{
             background: 'rgba(10,6,3,0.9)',
             border: `2px solid ${timerGlow}`,
             boxShadow: `0 0 12px ${timerGlow}55`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: timerGlow, fontWeight: 800, fontSize: '1.05rem',
+            color: timerGlow,
             transition: 'border-color 0.5s, color 0.5s, box-shadow 0.5s',
           }}
             aria-live={timeLeft <= 10 ? 'assertive' : 'off'}
@@ -282,11 +300,8 @@ export default function QuestionScreen({
           </p>
         )}
 
-        {/* 2x2 answer grid */}
-        <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 1fr',
-          gap: '10px', width: '100%', maxWidth: '960px',
-        }}>
+        {/* Grid de alternativas — colapsa para 1 coluna no mobile via .answers-grid */}
+        <div className="answers-grid">
           {shuffledIndices.map((originalIndex, displayIndex) => {
             const option = question.options[originalIndex]
             const isCorrect = originalIndex === Number(question.correctIndex)

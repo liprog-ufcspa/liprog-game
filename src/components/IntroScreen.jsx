@@ -1,5 +1,5 @@
 import React from 'react'
-import enterScene from '../assets/scenes/enter-scene.png'
+import enterScene from '../assets/scenes/enter-scene.webp'
 import liprogLogo from '../assets/liprog-logo.png'
 import ufcspaAcolheLogo from '../assets/ufcspa-acolhe-logo.png'
 import Fireflies from './Fireflies.jsx'
@@ -64,6 +64,15 @@ const styles = `
       0 1px 0 #000,
       inset 0 1px 0 rgba(255,255,255,0.1);
   }
+
+  .logo-ufcspa { height: 120px; }
+  .logo-liprog  { height: 200px; }
+
+  @media (max-width: 600px) {
+    .logo-ufcspa { height: 64px; }
+    .logo-liprog  { height: 100px; }
+    .play-btn { font-size: 0.7rem; padding: 14px 24px; }
+  }
 `
 
 const IntroScreen = ({ onStart }) => {
@@ -107,18 +116,18 @@ const IntroScreen = ({ onStart }) => {
         </button>
       </div>
 
-      {/* Bottom-left logo */}
       <img
         src={ufcspaAcolheLogo}
         alt="UFCSPA Acolhe"
-        style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', height: '120px', objectFit: 'contain' }}
+        className="logo-ufcspa"
+        style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', objectFit: 'contain' }}
       />
 
-      {/* Bottom-right logo */}
       <img
         src={liprogLogo}
         alt="LiProg"
-        style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', height: '200px', objectFit: 'contain' }}
+        className="logo-liprog"
+        style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', objectFit: 'contain' }}
       />
     </div>
   )
