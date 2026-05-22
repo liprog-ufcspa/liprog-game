@@ -3,6 +3,7 @@ import enterScene from '../assets/scenes/enter-scene.webp'
 import liprogLogo from '../assets/liprog-logo.webp'
 import ufcspaAcolheLogo from '../assets/ufcspa-acolhe-logo.webp'
 import Fireflies from './Fireflies.jsx'
+import EasterEgg from './EasterEgg.jsx'
 import { unlockAudio } from '../utils/sound.js'
 
 const styles = `
@@ -91,6 +92,7 @@ const IntroScreen = ({ onStart }) => {
       <div className="vignette" />
 
       <Fireflies count={12} />
+      <EasterEgg x="75%" y="25%" />
 
       {/* Title — top */}
       <div style={{

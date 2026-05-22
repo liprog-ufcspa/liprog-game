@@ -23,6 +23,10 @@ function shuffle(arr) {
   return a;
 }
 
+export function isQuestionActive(state) {
+  return state === QUESTION || state === CORRECT || state === WRONG_REVEAL;
+}
+
 export function initSession(questionsData) {
   const pool = {
     easy:   shuffle(questionsData.easy),

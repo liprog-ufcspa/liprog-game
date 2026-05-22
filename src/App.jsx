@@ -10,11 +10,12 @@ import VictoryScreen     from './components/VictoryScreen.jsx';
 import LoadingScreen     from './components/LoadingScreen.jsx';
 import TransitionOverlay from './components/TransitionOverlay.jsx';
 import CorrectOverlay    from './components/CorrectOverlay.jsx';
+import MuteButton        from './components/MuteButton.jsx';
 
-import { fetchQuestions }                          from './utils/fetchQuestions.js';
-import { initSession, INTRO, SCENE, QUESTION,
-         CORRECT, WRONG_REVEAL, GAMEOVER, VICTORY } from './utils/session.js';
-import { PRELOAD_IMGS }                            from './utils/preload.js';
+import { fetchQuestions }                                    from './utils/fetchQuestions.js';
+import { initSession, isQuestionActive, INTRO, SCENE,
+         QUESTION, CORRECT, WRONG_REVEAL, GAMEOVER, VICTORY } from './utils/session.js';
+import { PRELOAD_IMGS }                                      from './utils/preload.js';
 import {
   startBg, setMuted,
   playCorrect, playWrong, playVictory, playGameover, playTimeout,
@@ -48,7 +49,7 @@ export default function App() {
 
 
   // --- Estado do jogo ---
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted,         setIsMuted]         = useState(false);
   const [gameState,       setGameState]       = useState(INTRO);
   const [sceneIndex,      setSceneIndex]      = useState(0);
   const [session,         setSession]         = useState(null);
@@ -61,9 +62,32 @@ export default function App() {
   const [withFlash,     setWithFlash]     = useState(false);
   const pendingAction   = useRef(null);
 
-  // Timers internos que precisam ser cancelados no restart
-  const correctTimer     = useRef(null);
-  const wrongRevealTimer = useRef(null);
+  // --- Timers: avança estado automaticamente após CORRECT e WRONG_REVEAL ---
+  useEffect(() => {
+    if (gameState === CORRECT) {
+      const action = sceneIndex === 2
+        ? () => setGameState(VICTORY)
+        : () => { setSceneIndex(i => i + 1); setGameState(SCENE); };
+      const t = setTimeout(() => {
+        pendingAction.current = action;
+        setTransitioning(true);
+      }, 1800);
+      return () => clearTimeout(t);
+    }
+    if (gameState === WRONG_REVEAL) {
+      const t = setTimeout(() => {
+        pendingAction.current = () => setGameState(GAMEOVER);
+        setTransitioning(true);
+      }, 2500);
+      return () => clearTimeout(t);
+    }
+  }, [gameState, sceneIndex]);
+
+  // --- Áudio dos estados terminais ---
+  useEffect(() => {
+    if (gameState === VICTORY)  playVictory();
+    if (gameState === GAMEOVER) playGameover();
+  }, [gameState]);
 
   // --- Handlers de transição ---
   function goTo(action) {
@@ -103,12 +127,7 @@ export default function App() {
 
   function handleCorrect() {
     playCorrect();
-    const nextAction = sceneIndex === 2
-      ? () => { playVictory(); setGameState(VICTORY); }
-      : () => { setSceneIndex(sceneIndex + 1); setGameState(SCENE); };
-
     setGameState(CORRECT);
-    correctTimer.current = setTimeout(() => goTo(nextAction), 1800);
   }
 
   function handleWrong(chosenIndex = -1) {
@@ -116,7 +135,6 @@ export default function App() {
     setLastResult({ question: currentPathData.question, chosenIndex, phase: sceneIndex + 1 });
     setWrongChoice(chosenIndex);
     setGameState(WRONG_REVEAL);
-    wrongRevealTimer.current = setTimeout(() => goTo(() => { playGameover(); setGameState(GAMEOVER); }), 2500);
   }
 
   function restartGame() {
@@ -126,16 +144,12 @@ export default function App() {
   // --- Render ---
   if (!questionsData || !imagesReady) return <LoadingScreen error={loadError} />;
 
-  const showQuestion = gameState === QUESTION
-    || gameState === CORRECT
-    || gameState === WRONG_REVEAL;
-
   return (
     <>
       {gameState === INTRO && <IntroScreen onStart={handleStart} />}
       {gameState === SCENE && <SceneScreen sceneIndex={sceneIndex} onChoosePath={handleChoosePath} />}
 
-      {showQuestion && currentPathData && (
+      {isQuestionActive(gameState) && currentPathData && (
         <QuestionScreen
           question={currentPathData.question}
           difficulty={currentPathData.difficulty}
@@ -151,22 +165,7 @@ export default function App() {
       {gameState === VICTORY  && <VictoryScreen  onRestart={restartGame} />}
 
       {gameState !== INTRO && (
-        <button
-          onClick={toggleMute}
-          aria-label={isMuted ? 'Ativar som' : 'Mutar som'}
-          style={{
-            position: 'fixed', bottom: '1.25rem', left: '1.25rem', zIndex: 100,
-            background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.2)',
-            borderRadius: '50%', width: '40px', height: '40px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', fontSize: '1.1rem',
-            backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
-            transition: 'opacity 0.2s',
-            opacity: isMuted ? 0.5 : 1,
-          }}
-        >
-          {isMuted ? '🔇' : '🔊'}
-        </button>
+        <MuteButton isMuted={isMuted} onToggle={toggleMute} />
       )}
 
       <TransitionOverlay
